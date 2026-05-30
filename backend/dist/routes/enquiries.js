@@ -9,7 +9,6 @@ const Enquiry_1 = __importDefault(require("../models/Enquiry"));
 const User_1 = __importDefault(require("../models/User"));
 const email_1 = require("../lib/email");
 const emailTemplates_1 = require("../lib/emailTemplates");
-const razorpay_1 = require("../lib/razorpay");
 const router = (0, express_1.Router)();
 // POST /api/enquiries - Submit enquiry (Guest or User)
 router.post("/enquiries", auth_1.verifyUserHeader, async (req, res) => {
@@ -73,6 +72,18 @@ router.get("/enquiries/my", auth_1.verifyUserHeader, async (req, res) => {
     }
     catch (error) {
         console.error("Fetch User Enquiries Error:", error);
+        return res.status(500).json({ success: false, error: error.message });
+    }
+});
+// GET /api/enquiries/confirmed - Get all confirmed bookings (for booking slot verification)
+router.get("/enquiries/confirmed", async (req, res) => {
+    try {
+        const confirmedEnquiries = await Enquiry_1.default.find({ status: "confirmed" })
+            .select("preferredDate eventType addOns");
+        return res.json({ success: true, data: confirmedEnquiries });
+    }
+    catch (error) {
+        console.error("Fetch Confirmed Enquiries Error:", error);
         return res.status(500).json({ success: false, error: error.message });
     }
 });
@@ -169,25 +180,55 @@ router.patch("/admin/enquiries/:id", auth_1.verifyAdmin, async (req, res) => {
         if (status) {
             if (status === "approved") {
                 enquiry.status = "approved";
-                let amountInRupees = 20000;
-                if (enquiry.packageSelected === "basic")
-                    amountInRupees = 15000;
+                let pricePerPerson = 3999;
+                if (enquiry.packageSelected === "standard")
+                    pricePerPerson = 7499;
                 else if (enquiry.packageSelected === "premium")
-                    amountInRupees = 30000;
-                else if (enquiry.packageSelected === "luxury")
-                    amountInRupees = 45000;
-                const amountInPaise = amountInRupees * 100;
-                const options = {
-                    amount: amountInPaise,
-                    currency: "INR",
-                    receipt: enquiry._id.toString(),
-                };
-                const order = await razorpay_1.razorpay.orders.create(options);
-                enquiry.paymentOrderId = order.id;
+                    pricePerPerson = 14999;
+                else if (enquiry.packageSelected === "royal-elite")
+                    pricePerPerson = 24999;
+                const isFullDay = enquiry.addOns && enquiry.addOns.includes("Full Day");
+                if (isFullDay) {
+                    pricePerPerson += 699;
+                }
+                const guests = enquiry.expectedGuests || 20;
+                const subtotal = pricePerPerson * guests;
+                let discountPct = 0;
+                if (guests >= 350)
+                    discountPct = 20;
+                else if (guests >= 200)
+                    discountPct = 15;
+                else if (guests >= 100)
+                    discountPct = 10;
+                else if (guests >= 50)
+                    discountPct = 5;
+                const discountAmount = Math.round(subtotal * (discountPct / 100));
+                const amountInRupees = subtotal - discountAmount;
+                // Mock order ID (no real payment gateway)
+                enquiry.paymentOrderId = `mock_order_${enquiry._id.toString()}_${Date.now()}`;
                 enquiry.paymentAmount = amountInRupees;
                 await enquiry.save();
                 const redirectUrl = `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/my-enquiries`;
                 (0, email_1.sendEmail)(email, "Your Event Booking is Confirmed — The Grand Lounge", (0, emailTemplates_1.getApprovalTemplate)(name, enquiry.eventType, enquiry.preferredDate, enquiry.expectedGuests, enquiry.packageSelected, amountInRupees, redirectUrl)).catch((err) => console.error("Approval email dispatch failed:", err));
+            }
+            else if (status === "confirmed") {
+                enquiry.status = "confirmed";
+                await enquiry.save();
+                (0, email_1.sendEmail)(email, "Your Celebration Slot is Formally Booked! — The Grand Lounge", `
+            <div style="font-family: 'Playfair Display', Georgia, serif; background-color: #F8F5F0; padding: 40px 20px; text-align: center; color: #1F1F1F;">
+              <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #E8E2D9; border-radius: 24px; padding: 40px; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                <h2 style="font-weight: 600; text-align: center; color: #C5A880; font-size: 24px; letter-spacing: 1px; margin-bottom: 30px;">THE GRAND LOUNGE</h2>
+                <div style="text-align: center; margin-bottom: 25px;">
+                  <span style="font-size: 40px; color: #C5A880; line-height: 1;">★</span>
+                  <h3 style="font-size: 18px; margin-top: 10px; color: #C5A880;">Slot Fully Reserved</h3>
+                </div>
+                <p style="font-size: 16px; line-height: 1.6;">Dear ${name},</p>
+                <p style="font-size: 14px; line-height: 1.6; color: #6B6B6B;">Your booking for the <strong>${enquiry.eventType}</strong> on <strong>${new Date(enquiry.preferredDate).toLocaleDateString()}</strong> has been finalized by our Curation board. Your slot is now marked as <strong>Fully Booked and Locked</strong> in our master calendar.</p>
+                <p style="font-size: 14px; text-align: center; font-weight: bold; margin: 30px 0; color: #C5A880;">We await you with pleasure.</p>
+                <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Arjun Mehta</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
+              </div>
+            </div>
+          `).catch((err) => console.error("Confirmed email dispatch failed:", err));
             }
             else if (status === "rejected") {
                 enquiry.status = "rejected";

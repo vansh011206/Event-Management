@@ -6,12 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const auth_1 = require("../middleware/auth");
 const Enquiry_1 = __importDefault(require("../models/Enquiry"));
-const razorpay_1 = require("../lib/razorpay");
-const crypto_1 = __importDefault(require("crypto"));
 const email_1 = require("../lib/email");
 const emailTemplates_1 = require("../lib/emailTemplates");
 const router = (0, express_1.Router)();
-// POST /api/payment/create-order - Create Razorpay order
+// POST /api/payment/create-order - Create a mock payment order
 router.post("/payment/create-order", auth_1.verifyUserHeader, async (req, res) => {
     try {
         const { enquiryId } = req.body;
@@ -32,7 +30,6 @@ router.post("/payment/create-order", auth_1.verifyUserHeader, async (req, res) =
         if (enquiry.paymentStatus === "paid") {
             return res.status(400).json({ success: false, error: "Enquiry has already been paid." });
         }
-        let orderId = enquiry.paymentOrderId;
         let amount = enquiry.paymentAmount;
         if (!amount) {
             if (enquiry.packageSelected === "basic")
@@ -44,14 +41,8 @@ router.post("/payment/create-order", auth_1.verifyUserHeader, async (req, res) =
             else
                 amount = 20000;
         }
-        if (!orderId) {
-            const options = {
-                amount: amount * 100, // paise
-                currency: "INR",
-                receipt: enquiry._id.toString(),
-            };
-            const order = await razorpay_1.razorpay.orders.create(options);
-            orderId = order.id;
+        const orderId = enquiry.paymentOrderId || `mock_order_${enquiry._id}_${Date.now()}`;
+        if (!enquiry.paymentOrderId) {
             enquiry.paymentOrderId = orderId;
             enquiry.paymentAmount = amount;
             await enquiry.save();
@@ -60,9 +51,8 @@ router.post("/payment/create-order", auth_1.verifyUserHeader, async (req, res) =
             success: true,
             data: {
                 orderId,
-                amount: amount * 100,
+                amount,
                 currency: "INR",
-                keyId: process.env.RAZORPAY_KEY_ID || "",
             },
         });
     }
@@ -71,41 +61,37 @@ router.post("/payment/create-order", auth_1.verifyUserHeader, async (req, res) =
         return res.status(500).json({ success: false, error: error.message });
     }
 });
-// POST /api/payment/verify - Verify signature
+// POST /api/payment/verify - Mock verify and mark as paid
 router.post("/payment/verify", async (req, res) => {
     try {
-        const { razorpay_order_id, razorpay_payment_id, razorpay_signature, enquiryId } = req.body;
-        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !enquiryId) {
-            return res.status(400).json({ success: false, error: "Missing required verification fields." });
-        }
-        const secret = process.env.RAZORPAY_KEY_SECRET;
-        if (!secret) {
-            return res.status(500).json({ success: false, error: "Razorpay secret key is not configured." });
-        }
-        const payload = razorpay_order_id + "|" + razorpay_payment_id;
-        const generatedSignature = crypto_1.default
-            .createHmac("sha256", secret)
-            .update(payload)
-            .digest("hex");
-        const isValid = generatedSignature === razorpay_signature;
-        if (!isValid) {
-            return res.status(400).json({ success: false, error: "Signature verification failed." });
+        const { enquiryId, paymentMethod } = req.body;
+        if (!enquiryId) {
+            return res.status(400).json({ success: false, error: "Enquiry ID is required." });
         }
         const enquiry = await Enquiry_1.default.findById(enquiryId).populate("userId");
         if (!enquiry) {
             return res.status(404).json({ success: false, error: "Enquiry not found." });
         }
+        if (enquiry.paymentStatus === "paid") {
+            return res.status(400).json({ success: false, error: "Already paid." });
+        }
+        // Mark as paid (mock — no real transaction)
         enquiry.paymentStatus = "paid";
         await enquiry.save();
         const name = enquiry.userId ? enquiry.userId.name : enquiry.guestName;
         const email = enquiry.userId ? enquiry.userId.email : enquiry.guestEmail;
+        const mockPaymentId = `mock_pay_${Date.now()}`;
         if (email) {
-            (0, email_1.sendEmail)(email, "Payment Confirmed — The Grand Lounge", (0, emailTemplates_1.getPaymentConfirmationTemplate)(name, enquiry.eventType, enquiry.preferredDate, enquiry.paymentAmount, razorpay_payment_id)).catch((err) => console.error("Payment confirmation email failed:", err));
+            (0, email_1.sendEmail)(email, "Payment Confirmed — The Grand Lounge", (0, emailTemplates_1.getPaymentConfirmationTemplate)(name, enquiry.eventType, enquiry.preferredDate, enquiry.paymentAmount, mockPaymentId)).catch((err) => console.error("Payment confirmation email failed:", err));
         }
-        return res.json({ success: true, message: "Payment verified successfully." });
+        return res.json({
+            success: true,
+            message: "Payment verified successfully.",
+            data: { paymentId: mockPaymentId },
+        });
     }
     catch (error) {
-        console.error("Express Verify Signature Error:", error);
+        console.error("Express Verify Payment Error:", error);
         return res.status(500).json({ success: false, error: error.message });
     }
 });

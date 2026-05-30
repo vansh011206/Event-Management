@@ -57,7 +57,7 @@ const EnquirySchema = new mongoose_1.Schema({
     },
     status: {
         type: String,
-        enum: ["pending", "approved", "rejected"],
+        enum: ["pending", "approved", "rejected", "confirmed"],
         default: "pending",
     },
     paymentStatus: {

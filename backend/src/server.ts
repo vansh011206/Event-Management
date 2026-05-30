@@ -12,8 +12,19 @@ import paymentRoutes from "./routes/payments";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
-connectDB();
+// Ensure Database connection for every request
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err: any) {
+    console.error("Database connection failure on request:", err);
+    res.status(500).json({
+      success: false,
+      error: "Database connection failed. Please ensure MongoDB Atlas IP Whitelist allows Vercel serverless connections.",
+    });
+  }
+});
 
 // Middlewares
 const allowedOrigins = ["http://localhost:3000", "http://127.0.0.1:3000"];
