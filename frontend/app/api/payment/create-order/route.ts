@@ -13,7 +13,8 @@ export async function POST(req: Request) {
 
     const body = await req.json();
 
-    const backendUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const rawBackendUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const backendUrl = rawBackendUrl.replace(/\/$/, "");
     const res = await fetch(`${backendUrl}/api/payment/create-order`, {
       method: "POST",
       headers: {

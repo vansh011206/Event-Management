@@ -6,7 +6,8 @@ export async function GET(req: Request) {
     const adminToken = cookies().get("admin_token")?.value;
     const { searchParams } = new URL(req.url);
 
-    const backendUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const rawBackendUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const backendUrl = rawBackendUrl.replace(/\/$/, "");
     const res = await fetch(`${backendUrl}/api/admin/enquiries?${searchParams.toString()}`, {
       headers: adminToken ? { Cookie: `admin_token=${adminToken}` } : {},
     });
