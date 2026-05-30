@@ -1,0 +1,29 @@
+import { auth } from "@/lib/auth";
+import { NextResponse } from "next/server";
+
+export async function POST(req: Request) {
+  try {
+    const session = await auth();
+    const body = await req.json();
+    const headers: any = { "Content-Type": "application/json" };
+    
+    if (session?.user?.id) {
+      headers["x-user-id"] = session.user.id;
+    }
+
+    const res = await fetch("http://localhost:5000/api/enquiries", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
+  } catch (error: any) {
+    console.error("Next.js Enquiry Proxy Error:", error);
+    return NextResponse.json(
+      { success: false, error: error.message || "Failed to forward enquiry request." },
+      { status: 500 }
+    );
+  }
+}
