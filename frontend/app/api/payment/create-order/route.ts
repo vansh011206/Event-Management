@@ -13,7 +13,8 @@ export async function POST(req: Request) {
 
     const body = await req.json();
 
-    const res = await fetch("http://localhost:5000/api/payment/create-order", {
+    const backendUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const res = await fetch(`${backendUrl}/api/payment/create-order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

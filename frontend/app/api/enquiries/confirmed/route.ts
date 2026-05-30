@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const res = await fetch("http://localhost:5000/api/enquiries/confirmed", {
+    const backendUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const res = await fetch(`${backendUrl}/api/enquiries/confirmed`, {
       method: "GET",
       cache: "no-store",
     });

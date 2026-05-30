@@ -11,7 +11,8 @@ export async function GET() {
       );
     }
 
-    const res = await fetch("http://localhost:5000/api/enquiries/my", {
+    const backendUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const res = await fetch(`${backendUrl}/api/enquiries/my`, {
       headers: { "x-user-id": session.user.id },
     });
 

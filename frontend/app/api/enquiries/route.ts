@@ -11,7 +11,8 @@ export async function POST(req: Request) {
       headers["x-user-id"] = session.user.id;
     }
 
-    const res = await fetch("http://localhost:5000/api/enquiries", {
+    const backendUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const res = await fetch(`${backendUrl}/api/enquiries`, {
       method: "POST",
       headers,
       body: JSON.stringify(body),

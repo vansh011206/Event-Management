@@ -16,9 +16,15 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 // Middlewares
+const allowedOrigins = ["http://localhost:3000", "http://127.0.0.1:3000"];
+if (process.env.CLIENT_URL) {
+  const urls = process.env.CLIENT_URL.split(",").map((url) => url.trim());
+  allowedOrigins.push(...urls);
+}
+
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://event-management-eight-iota.vercel.app"],
+    origin: allowedOrigins,
     credentials: true,
   })
 );
@@ -35,6 +41,10 @@ app.use("/api", authRoutes);
 app.use("/api", enquiryRoutes);
 app.use("/api", paymentRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Express standalone backend listening on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`Express standalone backend listening on port ${PORT}`);
+  });
+}
+
+export default app;

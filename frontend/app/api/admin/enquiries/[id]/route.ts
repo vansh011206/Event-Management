@@ -5,7 +5,8 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   try {
     const adminToken = cookies().get("admin_token")?.value;
 
-    const res = await fetch(`http://localhost:5000/api/admin/enquiries/${params.id}`, {
+    const backendUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const res = await fetch(`${backendUrl}/api/admin/enquiries/${params.id}`, {
       headers: adminToken ? { Cookie: `admin_token=${adminToken}` } : {},
     });
 
@@ -25,7 +26,8 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     const adminToken = cookies().get("admin_token")?.value;
     const body = await req.json();
 
-    const res = await fetch(`http://localhost:5000/api/admin/enquiries/${params.id}`, {
+    const backendUrl = process.env.BACKEND_API_URL || "http://localhost:5000";
+    const res = await fetch(`${backendUrl}/api/admin/enquiries/${params.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
