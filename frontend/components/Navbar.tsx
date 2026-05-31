@@ -19,6 +19,7 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
   const [user, setUser] = useState<SessionUser | null>(null);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,11 +47,21 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
     checkSession();
   }, [pathname]);
 
-  // Close dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setIsProfileDropdownOpen(false);
+      }
+      
+      const target = e.target as HTMLElement;
+      const isMenuButtonClicked = target.closest('[aria-label="Toggle Menu"]');
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(e.target as Node) &&
+        !isMenuButtonClicked
+      ) {
+        setIsMobileMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -216,74 +227,80 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
         </div>
       </nav>
 
-      {/* Mobile Drawer Overlay */}
+      {/* Mobile Floating Dropdown Menu Card */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-background/95 backdrop-blur-md z-40 flex flex-col justify-center items-center gap-8 md:hidden animate-fade-in">
-          <div className="flex flex-col items-center gap-6">
-            {navLinks.map((link) => {
-              const active = isLinkActive(link.href, link.label);
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`font-display text-2xl transition-colors ${
-                    active
-                      ? "text-primary font-bold border-b-2 border-secondary"
-                      : "text-on-surface-variant hover:text-primary"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+        <div
+          ref={mobileMenuRef}
+          className={`fixed left-1/2 -translate-x-1/2 w-[90%] max-w-sm bg-white/95 backdrop-blur-md border border-[#E8DCC4]/60 rounded-[24px] shadow-2xl p-5 z-[60] md:hidden transition-all duration-300 animate-fade-in ${
+            isScrolled ? "top-[76px]" : "top-[92px]"
+          }`}
+        >
+          <div className="flex flex-col gap-4">
+            <div className="text-[10px] uppercase tracking-widest text-[#8C6D3E] font-label-caps font-bold border-b border-[#E8DCC4]/30 pb-2 text-center">
+              Quick Navigation
+            </div>
+            
+            <div className="flex flex-wrap gap-2 justify-center">
+              {navLinks.map((link) => {
+                const active = isLinkActive(link.href, link.label);
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`font-label-caps text-[10px] tracking-wider px-4 py-2.5 rounded-full border transition-all ${
+                      active
+                        ? "bg-[#755a28] text-white border-[#755a28] shadow-md shadow-[#755a28]/25 font-bold"
+                        : "bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28]"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
 
-            {user ? (
-              <>
-                <Link
-                  href="/profile"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display text-2xl text-on-surface-variant hover:text-primary transition-colors"
-                >
-                  My Profile
-                </Link>
-                <Link
-                  href="/my-enquiries"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display text-2xl text-on-surface-variant hover:text-primary transition-colors"
-                >
-                  My Enquiries
-                </Link>
-                <button
-                  onClick={() => { setIsMobileMenuOpen(false); handleLogout(); }}
-                  className="mt-2 text-red-600 font-display text-xl"
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display text-2xl text-on-surface-variant hover:text-primary transition-colors"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display text-2xl text-on-surface-variant hover:text-primary transition-colors"
-                >
-                  Register
-                </Link>
-              </>
-            )}
+              {user ? (
+                <>
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="font-label-caps text-[10px] tracking-wider px-4 py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all"
+                  >
+                    My Profile
+                  </Link>
+                  <button
+                    onClick={() => { setIsMobileMenuOpen(false); handleLogout(); }}
+                    className="font-label-caps text-[10px] tracking-wider px-4 py-2.5 rounded-full border bg-red-50 text-red-600 border-red-200/50 hover:bg-red-100 transition-all font-bold"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="font-label-caps text-[10px] tracking-wider px-4 py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="font-label-caps text-[10px] tracking-wider px-4 py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
+            </div>
+
+            <div className="h-[1px] bg-[#E8DCC4]/30 my-1" />
 
             <Link
               href="/booking"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="mt-4 bg-primary text-on-primary font-label-caps text-sm px-8 py-3 rounded-full hover:bg-secondary transition-all duration-300"
+              className="w-full text-center bg-black text-white font-label-caps text-[10px] tracking-widest py-3 rounded-full hover:bg-[#755a28] transition-all font-bold"
             >
               Book a Tour
             </Link>

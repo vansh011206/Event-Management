@@ -453,21 +453,23 @@ export default function GalleryPage() {
         </header>
 
         {/* Floating Category Filter Pill Bar */}
-        <div className="sticky top-20 z-40 flex justify-center mb-16 px-6">
-          <FadeIn className="bg-white/70 backdrop-blur-xl px-2 py-2 rounded-full border border-[#E8DCC4]/50 shadow-[0_8px_30px_rgba(197,168,128,0.06)] flex gap-1.5 flex-wrap justify-center max-w-5xl">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`px-5 py-2.5 rounded-full font-label-caps text-[10px] tracking-wider transition-all duration-300 ${
-                  activeCategory === cat.id
-                    ? "bg-gradient-to-r from-[#B49363] to-[#C5A880] text-white font-bold shadow-md shadow-[#C5A880]/20 scale-102"
-                    : "text-[#5A5245] hover:bg-[#C5A880]/10 hover:text-[#755a28]"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
+        <div className="sticky top-20 z-40 flex justify-center mb-16 px-6 max-w-5xl mx-auto w-full">
+          <FadeIn className="bg-white/70 backdrop-blur-xl p-2 rounded-full border border-[#E8DCC4]/50 shadow-[0_8px_30px_rgba(197,168,128,0.06)] flex items-center w-full">
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide w-full py-1.5 px-4 scroll-smooth flex-nowrap justify-start md:justify-center">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`px-5 py-2.5 rounded-full font-label-caps text-[10px] tracking-wider transition-all duration-300 shrink-0 border border-transparent ${
+                    activeCategory === cat.id
+                      ? "bg-gradient-to-r from-[#B49363] to-[#C5A880] text-white font-bold shadow-md shadow-[#C5A880]/20 scale-102"
+                      : "text-[#5A5245] hover:bg-[#C5A880]/10 hover:text-[#755a28]"
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
           </FadeIn>
         </div>
 

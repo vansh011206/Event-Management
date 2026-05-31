@@ -13,6 +13,7 @@ export default function Home() {
   const [date, setDate] = useState("");
   const [timeSlot, setTimeSlot] = useState("");
   const [guests, setGuests] = useState("");
+  const [isHeroCardExpanded, setIsHeroCardExpanded] = useState(false);
 
   const [isOccasionOpen, setIsOccasionOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
@@ -217,319 +218,344 @@ export default function Home() {
             <p className="text-surface-variant font-sans text-lg mt-6 max-w-2xl animate-fade-up-delay">
               A sanctuary of refined elegance where heritage meets contemporary luxury in the heart of Delhi.
             </p>
-          </div>
+          </div>          {/* Overlapping Booking Card - Increased dimensions and luxury styles */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[95%] lg:w-[95%] max-w-7xl z-40 flex flex-col items-center gap-4">
+            {/* Mobile Trigger Button (Visible only on mobile when card is collapsed) */}
+            {!isHeroCardExpanded && (
+              <button
+                onClick={() => setIsHeroCardExpanded(true)}
+                className="md:hidden bg-white/95 backdrop-blur-sm text-black border border-secondary/25 shadow-2xl px-6 py-4 rounded-full font-label-caps text-[10px] font-bold tracking-widest hover:bg-secondary/15 transition-all flex items-center gap-2"
+              >
+                <span className="material-symbols-outlined text-base">calendar_today</span>
+                Check Availability
+              </button>
+            )}
 
-          {/* Overlapping Booking Card - Increased dimensions and luxury styles */}
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[95%] lg:w-[95%] max-w-7xl z-40">
-            <div className="bg-surface/90 backdrop-blur-md rounded-[32px] md:rounded-full shadow-[0_32px_64px_-16px_rgba(117,90,40,0.15)] p-5 md:p-6 md:px-8 flex flex-col md:flex-row items-center gap-4 md:gap-6 border border-secondary/20 relative">
-              <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-2 px-2">
+            {/* Availability Card Container */}
+            <div className={`w-full transition-all duration-500 origin-bottom transform ${
+              isHeroCardExpanded 
+                ? "scale-100 opacity-100 max-h-[85vh] overflow-y-auto" 
+                : "scale-95 opacity-0 max-h-0 overflow-hidden md:scale-100 md:opacity-100 md:max-h-none md:overflow-visible"
+            }`}>
+              <div className="bg-surface/90 backdrop-blur-md rounded-[32px] md:rounded-full shadow-[0_32px_64px_-16px_rgba(117,90,40,0.15)] p-5 md:p-6 md:px-8 flex flex-col md:flex-row items-center gap-4 md:gap-6 border border-secondary/20 relative">
                 
-                {/* Occasion Selection Field */}
-                <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
-                     onClick={() => {
-                       setIsOccasionOpen(!isOccasionOpen);
-                       setIsDateOpen(false);
-                       setIsTimeSlotOpen(false);
-                       setIsGuestsOpen(false);
-                     }}>
-                  <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
-                    <span className="material-symbols-outlined text-xl">celebration</span>
-                  </div>
-                  <div className="flex-1 min-w-0 flex flex-col">
-                    <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Occasion</span>
-                    <input
-                      className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
-                      placeholder="Select Occasion"
-                      type="text"
-                      readOnly
-                      value={occasion}
-                    />
-                  </div>
+                {/* Close Button on Mobile */}
+                <button
+                  onClick={() => setIsHeroCardExpanded(false)}
+                  className="md:hidden absolute top-4 right-4 w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary hover:bg-secondary/20 transition-all z-50 animate-fade-in"
+                  aria-label="Collapse Availability Checker"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+
+                <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-2 px-2">
                   
-                  {isOccasionOpen && (
-                    <div 
-                      className="absolute bottom-full mb-6 left-0 w-80 md:w-[350px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <span className="font-label-caps text-secondary text-[11px] block font-bold mb-4 tracking-widest border-b border-secondary/15 pb-2">
-                        RECOMMENDED OCCASIONS
-                      </span>
-                      <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-1">
-                        {occasionsExtended.map((occ) => (
-                          <button
-                            key={occ.name}
-                            type="button"
-                            onClick={() => handleSelectOccasion(occ.name)}
-                            className={`w-full text-left p-3 rounded-2xl transition-all border flex flex-col items-start gap-0.5 ${
-                              occasion === occ.name
-                                ? "bg-primary text-on-primary border-primary font-bold"
-                                : "bg-surface-container-low text-on-surface border-transparent hover:bg-surface-container-high hover:border-secondary/25"
-                            }`}
-                          >
-                            <span className="font-label-caps text-[11px] tracking-wider">{occ.name}</span>
-                            <span className={`text-[10px] ${occasion === occ.name ? "text-on-primary/75" : "text-on-surface-variant/65"}`}>{occ.desc}</span>
-                          </button>
-                        ))}
-                      </div>
+                  {/* Occasion Selection Field */}
+                  <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
+                       onClick={() => {
+                         setIsOccasionOpen(!isOccasionOpen);
+                         setIsDateOpen(false);
+                         setIsTimeSlotOpen(false);
+                         setIsGuestsOpen(false);
+                       }}>
+                    <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
+                      <span className="material-symbols-outlined text-xl">celebration</span>
                     </div>
-                  )}
-                </div>
- 
-                {/* Date Selection Field */}
-                <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
-                     onClick={() => {
-                       setIsDateOpen(!isDateOpen);
-                       setIsOccasionOpen(false);
-                       setIsTimeSlotOpen(false);
-                       setIsGuestsOpen(false);
-                     }}>
-                  <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
-                    <span className="material-symbols-outlined text-xl">calendar_month</span>
-                  </div>
-                  <div className="flex-1 min-w-0 flex flex-col">
-                    <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Event Date</span>
-                    <input
-                      className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
-                      placeholder="Select Date"
-                      type="text"
-                      readOnly
-                      value={date}
-                    />
-                  </div>
- 
-                  {isDateOpen && (
-                    <div 
-                      className="absolute bottom-full mb-6 left-1/2 -translate-x-1/2 w-[340px] md:w-[360px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="flex items-center justify-between mb-4 border-b border-secondary/15 pb-2">
-                        <div className="flex items-center gap-3">
-                          <button 
-                            type="button" 
-                            disabled={isPrevMonthDisabled()} 
-                            onClick={handlePrevMonth} 
-                            className="w-7 h-7 rounded-full border border-secondary/25 flex items-center justify-center hover:bg-secondary/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed text-on-surface"
-                          >
-                            <span className="material-symbols-outlined text-[14px] font-bold">chevron_left</span>
-                          </button>
-                          <span className="font-display text-base text-on-surface font-semibold">
-                            {monthNames[currentMonth]} {currentYear}
-                          </span>
-                          <button 
-                            type="button" 
-                            onClick={handleNextMonth} 
-                            className="w-7 h-7 rounded-full border border-secondary/25 flex items-center justify-center hover:bg-secondary/10 transition-all text-on-surface"
-                          >
-                            <span className="material-symbols-outlined text-[14px] font-bold">chevron_right</span>
-                          </button>
-                        </div>
-                        <span className="font-label-caps text-[9px] text-secondary tracking-widest font-bold bg-secondary/10 px-2.5 py-1 rounded-full">
-                          DELHI SEASONS
+                    <div className="flex-1 min-w-0 flex flex-col">
+                      <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Occasion</span>
+                      <input
+                        className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
+                        placeholder="Select Occasion"
+                        type="text"
+                        readOnly
+                        value={occasion}
+                      />
+                    </div>
+                    
+                    {isOccasionOpen && (
+                      <div 
+                        className="absolute bottom-full mb-6 left-0 w-80 md:w-[350px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <span className="font-label-caps text-secondary text-[11px] block font-bold mb-4 tracking-widest border-b border-secondary/15 pb-2">
+                          RECOMMENDED OCCASIONS
                         </span>
-                      </div>
-                      
-                      {/* Grid */}
-                      <div className="grid grid-cols-7 gap-y-2 gap-x-1.5 text-center">
-                        {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
-                          <div key={i} className="font-label-caps text-[10px] text-on-surface-variant opacity-60 pb-1 font-bold">
-                            {d}
-                          </div>
-                        ))}
-                        {Array.from({ length: startOffset }).map((_, idx) => (
-                          <div key={`empty-${idx}`} className="h-8" />
-                        ))}
-                        {calendarDays.map((day) => {
-                          const isBooked = isDateFullyBooked(day);
-                          const isPast = isPastDate(day);
-                          const dNum = new Date(currentYear, currentMonth, day).getDay();
-                          const isPeak = dNum === 0 || dNum === 6;
-                          const isSelected = date === `${monthNames[currentMonth]} ${day}, ${currentYear}`;
-  
-                          let cellStyle = "h-8 w-8 flex items-center justify-center rounded-full text-xs font-semibold cursor-pointer transition-all mx-auto ";
-  
-                          if (isPast || isBooked) {
-                            cellStyle += "bg-surface-container-highest text-on-surface-variant opacity-25 cursor-not-allowed line-through";
-                          } else if (isSelected) {
-                            cellStyle += "bg-primary text-on-primary font-bold shadow-md shadow-primary/35 scale-110";
-                          } else if (isPeak) {
-                            cellStyle += "bg-secondary/15 border border-secondary/35 text-secondary hover:bg-secondary/30 hover:scale-105";
-                          } else {
-                            cellStyle += "hover:bg-secondary/10 text-on-surface hover:text-secondary";
-                          }
-  
-                          return (
+                        <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-1">
+                          {occasionsExtended.map((occ) => (
                             <button
-                              key={day}
+                              key={occ.name}
                               type="button"
-                              disabled={isPast || isBooked}
-                              onClick={() => handleSelectDate(day)}
-                              className={cellStyle}
+                              onClick={() => handleSelectOccasion(occ.name)}
+                              className={`w-full text-left p-3 rounded-2xl transition-all border flex flex-col items-start gap-0.5 ${
+                                occasion === occ.name
+                                  ? "bg-primary text-on-primary border-primary font-bold"
+                                  : "bg-surface-container-low text-on-surface border-transparent hover:bg-surface-container-high hover:border-secondary/25"
+                              }`}
                             >
-                              {day}
+                              <span className="font-label-caps text-[11px] tracking-wider">{occ.name}</span>
+                              <span className={`text-[10px] ${occasion === occ.name ? "text-on-primary/75" : "text-on-surface-variant/65"}`}>{occ.desc}</span>
                             </button>
-                          );
-                        })}
+                          ))}
+                        </div>
                       </div>
- 
-                      {/* Legend */}
-                      <div className="mt-5 pt-3 border-t border-secondary/15 flex justify-between text-[9px] font-label-caps text-on-surface-variant font-bold">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-2.5 h-2.5 rounded-full bg-secondary/15 border border-secondary/35"></div>
-                          <span>PEAK</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-2.5 h-2.5 rounded-full border border-secondary/30"></div>
-                          <span>AVAILABLE</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-2.5 h-2.5 rounded-full bg-surface-container-highest opacity-55 relative overflow-hidden">
-                            <div className="absolute inset-0 bg-line-through-deg"></div>
+                    )}
+                  </div>
+   
+                  {/* Date Selection Field */}
+                  <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
+                       onClick={() => {
+                         setIsDateOpen(!isDateOpen);
+                         setIsOccasionOpen(false);
+                         setIsTimeSlotOpen(false);
+                         setIsGuestsOpen(false);
+                       }}>
+                    <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
+                      <span className="material-symbols-outlined text-xl">calendar_month</span>
+                    </div>
+                    <div className="flex-1 min-w-0 flex flex-col">
+                      <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Event Date</span>
+                      <input
+                        className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
+                        placeholder="Select Date"
+                        type="text"
+                        readOnly
+                        value={date}
+                      />
+                    </div>
+   
+                    {isDateOpen && (
+                      <div 
+                        className="absolute bottom-full mb-6 left-1/2 -translate-x-1/2 w-[340px] md:w-[360px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="flex items-center justify-between mb-4 border-b border-secondary/15 pb-2">
+                          <div className="flex items-center gap-3">
+                            <button 
+                              type="button" 
+                              disabled={isPrevMonthDisabled()} 
+                              onClick={handlePrevMonth} 
+                              className="w-7 h-7 rounded-full border border-secondary/25 flex items-center justify-center hover:bg-secondary/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed text-on-surface"
+                            >
+                              <span className="material-symbols-outlined text-[14px] font-bold">chevron_left</span>
+                            </button>
+                            <span className="font-display text-base text-on-surface font-semibold">
+                              {monthNames[currentMonth]} {currentYear}
+                            </span>
+                            <button 
+                              type="button" 
+                              onClick={handleNextMonth} 
+                              className="w-7 h-7 rounded-full border border-secondary/25 flex items-center justify-center hover:bg-secondary/10 transition-all text-on-surface"
+                            >
+                              <span className="material-symbols-outlined text-[14px] font-bold">chevron_right</span>
+                            </button>
                           </div>
-                          <span>BOOKED</span>
+                          <span className="font-label-caps text-[9px] text-secondary tracking-widest font-bold bg-secondary/10 px-2.5 py-1 rounded-full">
+                            DELHI SEASONS
+                          </span>
+                        </div>
+                        
+                        {/* Grid */}
+                        <div className="grid grid-cols-7 gap-y-2 gap-x-1.5 text-center">
+                          {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
+                            <div key={i} className="font-label-caps text-[10px] text-on-surface-variant opacity-60 pb-1 font-bold">
+                              {d}
+                            </div>
+                          ))}
+                          {Array.from({ length: startOffset }).map((_, idx) => (
+                            <div key={`empty-${idx}`} className="h-8" />
+                          ))}
+                          {calendarDays.map((day) => {
+                            const isBooked = isDateFullyBooked(day);
+                            const isPast = isPastDate(day);
+                            const dNum = new Date(currentYear, currentMonth, day).getDay();
+                            const isPeak = dNum === 0 || dNum === 6;
+                            const isSelected = date === `${monthNames[currentMonth]} ${day}, ${currentYear}`;
+    
+                            let cellStyle = "h-8 w-8 flex items-center justify-center rounded-full text-xs font-semibold cursor-pointer transition-all mx-auto ";
+    
+                            if (isPast || isBooked) {
+                              cellStyle += "bg-surface-container-highest text-on-surface-variant opacity-25 cursor-not-allowed line-through";
+                            } else if (isSelected) {
+                              cellStyle += "bg-primary text-on-primary font-bold shadow-md shadow-primary/35 scale-110";
+                            } else if (isPeak) {
+                              cellStyle += "bg-secondary/15 border border-secondary/35 text-secondary hover:bg-secondary/30 hover:scale-105";
+                            } else {
+                              cellStyle += "hover:bg-secondary/10 text-on-surface hover:text-secondary";
+                            }
+    
+                            return (
+                              <button
+                                key={day}
+                                type="button"
+                                disabled={isPast || isBooked}
+                                onClick={() => handleSelectDate(day)}
+                                className={cellStyle}
+                              >
+                                {day}
+                              </button>
+                            );
+                          })}
+                        </div>
+   
+                        {/* Legend */}
+                        <div className="mt-5 pt-3 border-t border-secondary/15 flex justify-between text-[9px] font-label-caps text-on-surface-variant font-bold">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2.5 h-2.5 rounded-full bg-secondary/15 border border-secondary/35"></div>
+                            <span>PEAK</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2.5 h-2.5 rounded-full border border-secondary/30"></div>
+                            <span>AVAILABLE</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2.5 h-2.5 rounded-full bg-surface-container-highest opacity-55 relative overflow-hidden">
+                              <div className="absolute inset-0 bg-line-through-deg"></div>
+                            </div>
+                            <span>BOOKED</span>
+                          </div>
                         </div>
                       </div>
+                    )}
+                  </div>
+   
+                  {/* Time Slot Selection Field */}
+                  <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
+                       onClick={() => {
+                         setIsTimeSlotOpen(!isTimeSlotOpen);
+                         setIsOccasionOpen(false);
+                         setIsDateOpen(false);
+                         setIsGuestsOpen(false);
+                       }}>
+                    <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
+                      <span className="material-symbols-outlined text-xl">schedule</span>
                     </div>
-                  )}
-                </div>
- 
-                {/* Time Slot Selection Field */}
-                <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
-                     onClick={() => {
-                       setIsTimeSlotOpen(!isTimeSlotOpen);
-                       setIsOccasionOpen(false);
-                       setIsDateOpen(false);
-                       setIsGuestsOpen(false);
-                     }}>
-                  <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
-                    <span className="material-symbols-outlined text-xl">schedule</span>
-                  </div>
-                  <div className="flex-1 min-w-0 flex flex-col">
-                    <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Time Slot</span>
-                    <input
-                      className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
-                      placeholder="Select Time"
-                      type="text"
-                      readOnly
-                      value={timeSlot}
-                    />
-                  </div>
- 
-                  {isTimeSlotOpen && (
-                    <div 
-                      className="absolute bottom-full mb-6 left-1/2 -translate-x-1/2 w-80 md:w-[320px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <span className="font-label-caps text-secondary text-[11px] block font-bold mb-4 tracking-widest border-b border-secondary/15 pb-2">
-                        CHOOSE TIME SLOT
-                      </span>
-                      <div className="flex flex-col gap-2">
-                        {timeSlotsExtended.map((slot) => (
-                          <button
-                            key={slot.name}
-                            type="button"
-                            onClick={() => handleSelectTimeSlot(slot.name)}
-                            className={`w-full text-left p-3 rounded-2xl transition-all border flex flex-col items-start gap-0.5 ${
-                              timeSlot === slot.name
-                                ? "bg-primary text-on-primary border-primary font-bold shadow-md"
-                                : "bg-surface-container-low text-on-surface border-transparent hover:bg-surface-container-high hover:border-secondary/25"
-                            }`}
-                          >
-                            <span className="font-label-caps text-[11px] tracking-wider">{slot.name}</span>
-                            <span className={`text-[10px] ${timeSlot === slot.name ? "text-on-primary/75" : "text-on-surface-variant/65"}`}>{slot.desc}</span>
-                          </button>
-                        ))}
+                    <div className="flex-1 min-w-0 flex flex-col">
+                      <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Time Slot</span>
+                      <input
+                        className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
+                        placeholder="Select Time"
+                        type="text"
+                        readOnly
+                        value={timeSlot}
+                      />
+                    </div>
+   
+                    {isTimeSlotOpen && (
+                      <div 
+                        className="absolute bottom-full mb-6 left-1/2 -translate-x-1/2 w-80 md:w-[320px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <span className="font-label-caps text-secondary text-[11px] block font-bold mb-4 tracking-widest border-b border-secondary/15 pb-2">
+                          CHOOSE TIME SLOT
+                        </span>
+                        <div className="flex flex-col gap-2">
+                          {timeSlotsExtended.map((slot) => (
+                            <button
+                              key={slot.name}
+                              type="button"
+                              onClick={() => handleSelectTimeSlot(slot.name)}
+                              className={`w-full text-left p-3 rounded-2xl transition-all border flex flex-col items-start gap-0.5 ${
+                                timeSlot === slot.name
+                                  ? "bg-primary text-on-primary border-primary font-bold shadow-md"
+                                  : "bg-surface-container-low text-on-surface border-transparent hover:bg-surface-container-high hover:border-secondary/25"
+                              }`}
+                            >
+                              <span className="font-label-caps text-[11px] tracking-wider">{slot.name}</span>
+                              <span className={`text-[10px] ${timeSlot === slot.name ? "text-on-primary/75" : "text-on-surface-variant/65"}`}>{slot.desc}</span>
+                            </button>
+                          ))}
+                        </div>
                       </div>
+                    )}
+                  </div>
+   
+                  {/* Guests Selection Field */}
+                  <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
+                       onClick={() => {
+                         setIsGuestsOpen(!isGuestsOpen);
+                         setIsOccasionOpen(false);
+                         setIsDateOpen(false);
+                         setIsTimeSlotOpen(false);
+                       }}>
+                    <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
+                      <span className="material-symbols-outlined text-xl">groups</span>
                     </div>
-                  )}
-                </div>
- 
-                {/* Guests Selection Field */}
-                <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
-                     onClick={() => {
-                       setIsGuestsOpen(!isGuestsOpen);
-                       setIsOccasionOpen(false);
-                       setIsDateOpen(false);
-                       setIsTimeSlotOpen(false);
-                     }}>
-                  <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
-                    <span className="material-symbols-outlined text-xl">groups</span>
-                  </div>
-                  <div className="flex-1 min-w-0 flex flex-col">
-                    <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Guest Count</span>
-                    <input
-                      className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
-                      placeholder="Select Guests"
-                      type="text"
-                      readOnly
-                      value={guests}
-                    />
-                  </div>
- 
-                  {isGuestsOpen && (
-                    <div 
-                      className="absolute bottom-full mb-6 right-0 w-80 md:w-[350px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <span className="font-label-caps text-secondary text-[11px] block font-bold mb-4 tracking-widest border-b border-secondary/15 pb-2">
-                        RECOMMENDED GUEST CAPACITY
-                      </span>
-                      <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-1">
-                        {guestRangesExtended.map((item) => (
-                          <button
-                            key={item.range}
-                            type="button"
-                            onClick={() => handleSelectGuests(item.range)}
-                            className={`w-full text-left p-3 rounded-2xl transition-all border flex flex-col items-start gap-0.5 ${
-                              guests === `${item.range} Guests`
-                                ? "bg-primary text-on-primary border-primary font-bold shadow-md"
-                                : "bg-surface-container-low text-on-surface border-transparent hover:bg-surface-container-high hover:border-secondary/25"
-                            }`}
-                          >
-                            <span className="font-label-caps text-[11px] tracking-wider">{item.range} Guests</span>
-                            <span className={`text-[10px] ${guests === `${item.range} Guests` ? "text-on-primary/75" : "text-on-surface-variant/65"}`}>{item.desc}</span>
-                          </button>
-                        ))}
+                    <div className="flex-1 min-w-0 flex flex-col">
+                      <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Guest Count</span>
+                      <input
+                        className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
+                        placeholder="Select Guests"
+                        type="text"
+                        readOnly
+                        value={guests}
+                      />
+                    </div>
+   
+                    {isGuestsOpen && (
+                      <div 
+                        className="absolute bottom-full mb-6 right-0 w-80 md:w-[350px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <span className="font-label-caps text-secondary text-[11px] block font-bold mb-4 tracking-widest border-b border-secondary/15 pb-2">
+                          RECOMMENDED GUEST CAPACITY
+                        </span>
+                        <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-1">
+                          {guestRangesExtended.map((item) => (
+                            <button
+                              key={item.range}
+                              type="button"
+                              onClick={() => handleSelectGuests(item.range)}
+                              className={`w-full text-left p-3 rounded-2xl transition-all border flex flex-col items-start gap-0.5 ${
+                                guests === `${item.range} Guests`
+                                  ? "bg-primary text-on-primary border-primary font-bold shadow-md"
+                                  : "bg-surface-container-low text-on-surface border-transparent hover:bg-surface-container-high hover:border-secondary/25"
+                              }`}
+                            >
+                              <span className="font-label-caps text-[11px] tracking-wider">{item.range} Guests</span>
+                              <span className={`text-[10px] ${guests === `${item.range} Guests` ? "text-on-primary/75" : "text-on-surface-variant/65"}`}>{item.desc}</span>
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
+   
                 </div>
- 
-              </div>
-              
-              <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto shrink-0">
-                {availabilityStatus === "available" && (
-                  <span className="text-xs font-bold text-green-700 bg-green-50 px-4 py-2 rounded-full border border-green-200 animate-pulse text-center">
-                    Available! You can book
-                  </span>
-                )}
-                {availabilityStatus === "unavailable" && (
-                  <span className="text-xs font-bold text-red-700 bg-red-50 px-4 py-2 rounded-full border border-red-200 text-center">
-                    Slot Booked. Choose another
-                  </span>
-                )}
                 
-                {availabilityStatus === "available" ? (
-                  <button
-                    onClick={handleCheckAvailability}
-                    className="w-full md:w-auto bg-green-600 text-white px-8 py-4 rounded-full font-label-caps text-xs hover:bg-green-700 transition-all duration-300 font-bold tracking-widest hover:scale-105 active:scale-95 shadow-lg shadow-green-600/10 flex items-center justify-center gap-2"
-                  >
-                    <span>BOOK NOW</span>
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={availabilityStatus === "checking" ? undefined : checkAvailability}
-                    disabled={availabilityStatus === "checking"}
-                    className="w-full md:w-auto bg-primary text-on-primary px-8 py-4 rounded-full font-label-caps text-xs hover:bg-secondary hover:text-white transition-all duration-300 font-bold tracking-widest hover:scale-105 active:scale-95 shadow-lg shadow-primary/10 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <span>{availabilityStatus === "checking" ? "Checking..." : "Check Availability"}</span>
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                  </button>
-                )}
+                <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto shrink-0">
+                  {availabilityStatus === "available" && (
+                    <span className="text-xs font-bold text-green-700 bg-green-50 px-4 py-2 rounded-full border border-green-200 animate-pulse text-center">
+                      Available! You can book
+                    </span>
+                  )}
+                  {availabilityStatus === "unavailable" && (
+                    <span className="text-xs font-bold text-red-700 bg-red-50 px-4 py-2 rounded-full border border-red-200 text-center">
+                      Slot Booked. Choose another
+                    </span>
+                  )}
+                  
+                  {availabilityStatus === "available" ? (
+                    <button
+                      onClick={handleCheckAvailability}
+                      className="w-full md:w-auto bg-green-600 text-white px-8 py-4 rounded-full font-label-caps text-xs hover:bg-green-700 transition-all duration-300 font-bold tracking-widest hover:scale-105 active:scale-95 shadow-lg shadow-green-600/10 flex items-center justify-center gap-2"
+                    >
+                      <span>BOOK NOW</span>
+                      <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={availabilityStatus === "checking" ? undefined : checkAvailability}
+                      disabled={availabilityStatus === "checking"}
+                      className="w-full md:w-auto bg-primary text-on-primary px-8 py-4 rounded-full font-label-caps text-xs hover:bg-secondary hover:text-white transition-all duration-300 font-bold tracking-widest hover:scale-105 active:scale-95 shadow-lg shadow-primary/10 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <span>{availabilityStatus === "checking" ? "Checking..." : "Check Availability"}</span>
+                      <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </div></section>
 
         {/* Luxury Features */}
         <section className="py-24 md:py-32 px-6 md:px-20 max-w-7xl mx-auto">

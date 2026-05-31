@@ -438,7 +438,7 @@ function BookingForm() {
 
   return (
     <div className="flex flex-col gap-12 w-full relative">
-      <div id="booking-wizard-container" className="w-full bg-surface-container-low rounded-[40px] p-8 md:p-14 border border-secondary/10 shadow-xl shadow-secondary/5">
+      <div id="booking-wizard-container" className="w-full bg-surface-container-low rounded-[40px] p-4 sm:p-8 md:p-14 border border-secondary/10 shadow-xl shadow-secondary/5">
         {/* Step dots */}
         {step < 5 && (
           <nav className="flex flex-wrap items-center gap-4 mb-12">
@@ -458,7 +458,7 @@ function BookingForm() {
           </nav>
         )}
 
-        {/* ═══ STEP 1: SELECT PACKAGE (Horizontal Scroll) ═══ */}
+        {/* ═══ STEP 1: SELECT PACKAGE (Horizontal Scroll on desktop, stacked on mobile) ═══ */}
         {step === 1 && (
           <section className="animate-fade-in">
             <h1 className="font-display text-4xl md:text-5xl text-on-surface mb-3 font-semibold">
@@ -470,13 +470,13 @@ function BookingForm() {
 
             <div
               ref={scrollRef}
-              className="flex gap-5 overflow-x-auto pt-6 pb-6 scrollbar-hide snap-x snap-mandatory"
+              className="flex flex-col md:flex-row gap-5 overflow-y-visible md:overflow-x-auto pt-6 pb-6 scrollbar-hide md:snap-x md:snap-mandatory"
             >
               {PACKAGES.map((pkg) => (
                 <div
                   key={pkg.id}
                   onClick={() => handleSelectPackage(pkg.id)}
-                  className={`shrink-0 w-[340px] md:w-[370px] snap-start group cursor-pointer bg-white rounded-[20px] p-7 transition-all duration-400 hover:shadow-lg border flex flex-col relative ${
+                  className={`w-full max-w-sm mx-auto md:w-[340px] lg:w-[370px] md:shrink-0 snap-start group cursor-pointer bg-white rounded-[20px] p-5 md:p-7 transition-all duration-400 hover:shadow-lg border flex flex-col relative ${
                     selectedPackageId === pkg.id
                       ? "border-[#C5A880] ring-1 ring-[#C5A880] shadow-md"
                       : "border-[#E8E2D9] hover:border-[#C5A880]/50"
@@ -493,7 +493,7 @@ function BookingForm() {
 
                   <div className="p-1 flex flex-col flex-1">
                     {/* Tier label */}
-                    <div className="flex items-center gap-2 mb-5">
+                    <div className="flex items-center gap-2 mb-3 md:mb-5">
                       <span className="text-[#C5A880]">{TIER_ICON_MAP[pkg.id]}</span>
                       <span className="font-label-caps text-[10px] text-[#C5A880] tracking-[0.15em] font-bold">
                         {pkg.tier.toUpperCase()}
@@ -501,8 +501,8 @@ function BookingForm() {
                     </div>
 
                     {/* Price */}
-                    <div className="flex items-baseline gap-2 mb-4">
-                      <span className="font-display text-[38px] text-[#1F1F1F] font-bold leading-none tracking-tight">
+                    <div className="flex items-baseline gap-2 mb-3 md:mb-4">
+                      <span className="font-display text-3xl md:text-[38px] text-[#1F1F1F] font-bold leading-none tracking-tight">
                         {pkg.priceLabel}
                       </span>
                       <span className="text-[11px] text-[#8A8A8A] font-medium">
@@ -511,12 +511,12 @@ function BookingForm() {
                     </div>
 
                     {/* Description */}
-                    <p className="text-[13px] text-[#6B6B6B] leading-relaxed mb-6">
+                    <p className="text-xs md:text-[13px] text-[#6B6B6B] leading-relaxed mb-4 md:mb-6">
                       {pkg.desc}
                     </p>
 
                     {/* Duration & Guests — subtle pills */}
-                    <div className="flex gap-2 mb-6">
+                    <div className="flex gap-2 mb-4 md:mb-6">
                       <span className="inline-flex items-center gap-1.5 text-[10px] text-[#6B6B6B] font-medium bg-[#F6F3EE] px-3 py-1.5 rounded-lg">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                         {pkg.duration}
@@ -531,11 +531,11 @@ function BookingForm() {
                     <div className="h-px bg-[#EDEBE8] mb-5"></div>
 
                     {/* Features */}
-                    <ul className="space-y-2.5 mb-8 flex-1">
+                    <ul className="space-y-2 md:space-y-2.5 mb-6 md:mb-8 flex-1">
                       {pkg.topFeatures.map((f, i) => (
                         <li key={i} className="flex items-start gap-2.5">
                           <CheckSvg />
-                          <span className="text-[13px] text-[#3D3D3D] leading-snug">
+                          <span className="text-xs md:text-[13px] text-[#3D3D3D] leading-snug">
                             {f}
                           </span>
                         </li>
@@ -543,7 +543,7 @@ function BookingForm() {
                     </ul>
 
                     {/* CTA */}
-                    <div className={`w-full text-center text-[11px] font-bold tracking-[0.12em] uppercase px-6 py-4 rounded-xl transition-all duration-300 active:scale-[0.97] flex items-center justify-center gap-2 ${
+                    <div className={`w-full text-center text-[10px] md:text-[11px] font-bold tracking-[0.12em] uppercase px-6 py-3 md:py-4 rounded-xl transition-all duration-300 active:scale-[0.97] flex items-center justify-center gap-2 ${
                       selectedPackageId === pkg.id
                         ? "bg-[#1F1F1F] text-white"
                         : "bg-[#F6F3EE] text-[#1F1F1F] group-hover:bg-[#1F1F1F] group-hover:text-white"
@@ -935,7 +935,7 @@ export default function BookingPage() {
   return (
     <>
       <Navbar activePage="Booking" />
-      <main className="pt-32 pb-24 px-6 md:px-12 w-full max-w-[1500px] mx-auto min-h-screen">
+      <main className="pt-36 sm:pt-40 md:pt-44 pb-24 px-4 sm:px-6 md:px-12 w-full max-w-[1500px] mx-auto min-h-screen">
         <Suspense fallback={
           <div className="flex items-center justify-center min-h-[50vh]">
             <span className="font-label-caps text-secondary text-sm animate-pulse">LOADING BOOKING ENGINE...</span>
