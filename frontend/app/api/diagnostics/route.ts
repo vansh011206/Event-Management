@@ -13,15 +13,18 @@ export async function GET() {
       NODE_ENV: process.env.NODE_ENV || null,
     },
     databaseConnection: "Not attempted",
+    importUser: "Not attempted",
+    importAuth: "Not attempted",
   };
 
+  // Test DB connection
   if (process.env.MONGODB_URI) {
     try {
       if (mongoose.connection.readyState === 1) {
         diagnostics.databaseConnection = "Already connected";
       } else {
         await mongoose.connect(process.env.MONGODB_URI, {
-          serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds instead of waiting forever
+          serverSelectionTimeoutMS: 5000,
         });
         diagnostics.databaseConnection = "Connected successfully during diagnostics";
       }
@@ -30,6 +33,22 @@ export async function GET() {
     }
   } else {
     diagnostics.databaseConnection = "Failed: MONGODB_URI env variable is missing";
+  }
+
+  // Test User Model Import
+  try {
+    const UserModule = await import("@/lib/models/User");
+    diagnostics.importUser = "Success";
+  } catch (userImportError: any) {
+    diagnostics.importUser = `Failed: ${userImportError.message || userImportError.toString()}`;
+  }
+
+  // Test NextAuth Import
+  try {
+    const AuthModule = await import("@/lib/auth");
+    diagnostics.importAuth = "Success";
+  } catch (authImportError: any) {
+    diagnostics.importAuth = `Failed: ${authImportError.message || authImportError.toString()}`;
   }
 
   return NextResponse.json(diagnostics);
