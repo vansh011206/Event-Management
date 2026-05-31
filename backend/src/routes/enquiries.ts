@@ -275,7 +275,7 @@ router.patch("/admin/enquiries/:id", verifyAdmin, async (req, res) => {
                 <p style="font-size: 16px; line-height: 1.6;">Dear ${name},</p>
                 <p style="font-size: 14px; line-height: 1.6; color: #6B6B6B;">Your booking for the <strong>${enquiry.eventType}</strong> on <strong>${new Date(enquiry.preferredDate).toLocaleDateString()}</strong> has been finalized by our Curation board. Your slot is now marked as <strong>Fully Booked and Locked</strong> in our master calendar.</p>
                 <p style="font-size: 14px; text-align: center; font-weight: bold; margin: 30px 0; color: #C5A880;">We await you with pleasure.</p>
-                <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Arjun Mehta</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
+                <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Vanshaj Sharma</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
               </div>
             </div>
           `

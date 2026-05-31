@@ -29,7 +29,7 @@ export function getEnquiryReceivedTemplate(name: string, eventType: string, date
         </div>
         
         <p style="font-size: 13px; line-height: 1.6; color: #6B6B6B;">Should you have any immediate questions, please do not hesitate to contact our Curator Desk.</p>
-        <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Arjun Mehta</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
+        <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Vanshaj Sharma</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
       </div>
     </div>
   `;
@@ -75,7 +75,7 @@ export function getApprovalTemplate(name: string, eventType: string, date: strin
         
         <p style="font-size: 12px; line-height: 1.6; color: #888888; text-align: center;">Please complete the booking deposit within 48 hours to secure your master slot in our calendar.</p>
         
-        <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Arjun Mehta</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
+        <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Vanshaj Sharma</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
       </div>
     </div>
   `;
@@ -98,7 +98,7 @@ export function getRejectionTemplate(name: string, eventType: string, date: stri
         
         <p style="font-size: 13px; line-height: 1.6; color: #6B6B6B;">We would be delighted to discuss alternative dates or layouts. Please visit our <a href="${redirectUrl || 'http://localhost:3000/contact'}" style="color: #C5A880; text-decoration: underline;">contact page</a> to connect with our concierge team.</p>
         
-        <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Arjun Mehta</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
+        <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Vanshaj Sharma</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
       </div>
     </div>
   `;
@@ -140,7 +140,7 @@ export function getPaymentConfirmationTemplate(name: string, eventType: string, 
         
         <p style="font-size: 14px; text-align: center; font-weight: bold; margin: 30px 0; color: #C5A880;">See you on ${new Date(date).toLocaleDateString()}!</p>
         
-        <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Arjun Mehta</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
+        <p style="font-size: 14px; margin-top: 30px; border-top: 1px solid #E8E2D9; padding-top: 20px;">Warm regards,<br><strong style="color: #1F1F1F;">Vanshaj Sharma</strong><br><span style="font-size: 12px; color: #C5A880;">General Manager, The Grand Lounge</span></p>
       </div>
     </div>
   `;

@@ -15,7 +15,7 @@ function SidebarContent({
   isMobileSidebarOpen,
   setIsMobileSidebarOpen,
   bookingsCount = 0,
-  adminName = "Arjun Mehta"
+  adminName = "Vanshaj Sharma"
 }: SidebarProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -92,7 +92,7 @@ function SidebarContent({
       <div className="pt-6 border-t border-[#E8E2D9] mt-6">
         <div className="w-full flex items-center gap-3 bg-[#F8F5F0] p-3.5 rounded-[16px] border border-[#E8E2D9]/60 hover:bg-[#F3EEE7] transition-all text-left">
           <div className="w-10 h-10 rounded-full bg-[#C5A880]/20 flex items-center justify-center font-display text-sm font-bold text-[#C5A880] shrink-0 border border-[#C5A880]/10">
-            AM
+            VS
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-xs font-bold text-[#1F1F1F] truncate">{adminName}</p>

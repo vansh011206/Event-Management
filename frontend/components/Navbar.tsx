@@ -101,7 +101,7 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
         {/* Brand Logo */}
         <Link
           href="/"
-          className="font-display-lg text-lg md:text-xl font-bold text-primary tracking-tighter hover:opacity-80 transition-opacity"
+          className="font-display text-[15px] sm:text-lg md:text-xl font-bold text-primary tracking-tighter hover:opacity-80 transition-opacity"
         >
           The Grand Lounge
         </Link>
@@ -227,7 +227,7 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
                   key={link.label}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`font-display-lg text-2xl transition-colors ${
+                  className={`font-display text-2xl transition-colors ${
                     active
                       ? "text-primary font-bold border-b-2 border-secondary"
                       : "text-on-surface-variant hover:text-primary"
@@ -243,20 +243,20 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
                 <Link
                   href="/profile"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display-lg text-2xl text-on-surface-variant hover:text-primary transition-colors"
+                  className="font-display text-2xl text-on-surface-variant hover:text-primary transition-colors"
                 >
                   My Profile
                 </Link>
                 <Link
                   href="/my-enquiries"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display-lg text-2xl text-on-surface-variant hover:text-primary transition-colors"
+                  className="font-display text-2xl text-on-surface-variant hover:text-primary transition-colors"
                 >
                   My Enquiries
                 </Link>
                 <button
                   onClick={() => { setIsMobileMenuOpen(false); handleLogout(); }}
-                  className="mt-2 text-red-600 font-display-lg text-xl"
+                  className="mt-2 text-red-600 font-display text-xl"
                 >
                   Sign Out
                 </button>
@@ -266,14 +266,14 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
                 <Link
                   href="/login"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display-lg text-2xl text-on-surface-variant hover:text-primary transition-colors"
+                  className="font-display text-2xl text-on-surface-variant hover:text-primary transition-colors"
                 >
                   Login
                 </Link>
                 <Link
                   href="/register"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display-lg text-2xl text-on-surface-variant hover:text-primary transition-colors"
+                  className="font-display text-2xl text-on-surface-variant hover:text-primary transition-colors"
                 >
                   Register
                 </Link>

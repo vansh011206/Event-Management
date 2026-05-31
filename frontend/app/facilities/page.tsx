@@ -239,43 +239,43 @@ export default function FacilitiesPage() {
     <>
       <Navbar activePage="Facilities" />
 
-      <main className="bg-[#F8F5F0] min-h-screen pt-24 relative overflow-hidden">
+      <main className="bg-[#F8F5F0] min-h-screen pt-16 relative overflow-hidden">
         {/* Luxury Backdrop Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-gradient-to-b from-[#C5A880]/15 to-transparent rounded-full blur-[140px] pointer-events-none -z-10" />
 
         {/* Header / Intro */}
-        <header className="pt-24 pb-8 px-6 md:px-20 text-center max-w-4xl mx-auto relative z-10">
+        <header className="pt-16 pb-4 px-6 md:px-20 text-center max-w-4xl mx-auto relative z-10">
           <FadeIn>
-            <span className="font-label-caps text-secondary mb-4 block uppercase tracking-widest text-xs font-bold">
-              🌟 Resort Facilities & Amenities
+            <span className="font-label-caps text-secondary mb-3 block uppercase tracking-widest text-[11px] font-bold">
+              Resort Facilities & Amenities
             </span>
-            <h1 className="font-display text-4xl md:text-6xl text-primary mb-4 leading-[1.1] tracking-[-0.02em] font-semibold">
+            <h1 className="font-display text-4xl md:text-5xl text-primary mb-4 leading-[1.15] tracking-[-0.02em] font-semibold">
               The World of The Grand Lounge
             </h1>
             
             {/* Elegant Luxury Flourish Divider */}
-            <div className="flex items-center justify-center gap-4 my-6">
-              <span className="h-[1px] w-16 bg-gradient-to-r from-transparent to-[#C5A880]/50" />
+            <div className="flex items-center justify-center gap-4 my-5">
+              <span className="h-[1px] w-12 bg-gradient-to-r from-transparent to-[#C5A880]/40" />
               <span className="material-symbols-outlined text-[#C5A880] text-xs">grade</span>
-              <span className="h-[1px] w-16 bg-gradient-to-l from-transparent to-[#C5A880]/50" />
+              <span className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[#C5A880]/40" />
             </div>
 
-            <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
-              Explore our extensive selection of world-class facilities and curated services. From active sports and adventure to starlit dining and wedding curations.
+            <p className="font-body-md text-[#5A5245] max-w-2xl mx-auto leading-relaxed">
+              Explore our extensive selection of world-class facilities and curated services, custom-tailored for bespoke celebrations.
             </p>
           </FadeIn>
         </header>
 
         {/* Premium Selling Line Marquee */}
-        <section className="px-6 md:px-12 max-w-7xl mx-auto mb-16 relative z-10">
+        <section className="max-w-7xl mx-auto mb-12 relative z-10 px-6">
           <FadeIn>
-            <div className="bg-[#1F1F1F] text-[#C5A880] py-5 border border-[#C5A880]/30 rounded-[28px] shadow-lg shadow-black/5 overflow-hidden relative">
+            <div className="py-4 border-y border-[#C5A880]/20 overflow-hidden relative">
               {/* Fade overlays */}
-              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#1F1F1F] via-[#1F1F1F]/80 to-transparent z-10 pointer-events-none" />
-              <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#1F1F1F] via-[#1F1F1F]/80 to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#F8F5F0] to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#F8F5F0] to-transparent z-10 pointer-events-none" />
               
               <div className="flex whitespace-nowrap overflow-hidden">
-                <div className="animate-marquee flex gap-12 text-[10.5px] md:text-xs font-display tracking-[0.15em] uppercase font-semibold">
+                <div className="animate-marquee flex gap-12 text-[10px] md:text-xs font-sans text-secondary tracking-[0.2em] uppercase font-bold">
                   <span>{marqueeText}</span>
                   <span>{marqueeText}</span>
                 </div>
@@ -333,11 +333,11 @@ export default function FacilitiesPage() {
 
         {/* Facilities Grid View */}
         <section className="px-6 md:px-20 mb-32 max-w-7xl mx-auto relative z-10">
-          <FadeIn>
-            <div className="space-y-16">
-              {activeCategory === "all" ? (
-                CATEGORIES.map((cat) => (
-                  <div key={cat.id} className="space-y-6">
+          <div className="space-y-16">
+            {activeCategory === "all" ? (
+              CATEGORIES.map((cat, idx) => (
+                <FadeIn key={cat.id} delay={Math.min(idx * 40, 200)} duration={500} threshold={0.02}>
+                  <div className="space-y-6">
                     <h2 className="font-display text-2xl font-medium text-[#1F1F1F] flex items-center justify-between border-b border-[#E8DCC4]/40 pb-4">
                       <div className="flex items-center gap-3">
                         <span className="material-symbols-outlined text-[#C5A880] text-2xl bg-[#C5A880]/5 p-2 rounded-xl">{cat.icon}</span>
@@ -353,8 +353,10 @@ export default function FacilitiesPage() {
                       ))}
                     </div>
                   </div>
-                ))
-              ) : (
+                </FadeIn>
+              ))
+            ) : (
+              <FadeIn duration={400} threshold={0.02}>
                 <div className="space-y-6">
                   <h2 className="font-display text-2xl font-medium text-[#1F1F1F] flex items-center justify-between border-b border-[#E8DCC4]/40 pb-4">
                     <div className="flex items-center gap-3">
@@ -373,9 +375,9 @@ export default function FacilitiesPage() {
                     ))}
                   </div>
                 </div>
-              )}
-            </div>
-          </FadeIn>
+              </FadeIn>
+            )}
+          </div>
         </section>
       </main>
 

@@ -28,7 +28,7 @@ function DashboardContent() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [spaceFilter, setSpaceFilter] = useState("All");
   const [sortBy, setSortBy] = useState("newest");
-  const [adminName, setAdminName] = useState("Arjun Mehta");
+  const [adminName, setAdminName] = useState("Vanshaj Sharma");
   const [adminEmail, setAdminEmail] = useState("curator@thegrandlounge.com");
   const [adminPhone, setAdminPhone] = useState("+91 11 4999 9999");
   const [selectedCalendarDay, setSelectedCalendarDay] = useState<string | null>(null);
@@ -154,7 +154,7 @@ function DashboardContent() {
 
   // Testimonials database
   const [testimonials, setTestimonials] = useState<Testimonial[]>([
-    { id: "t1", name: "Ananya Sen", rating: 5, text: "The white-glove curation by General Manager Arjun Mehta exceeded all family expectations. Our wedding was legendary.", occasion: "Wedding Celebration", status: "Featured" },
+    { id: "t1", name: "Ananya Sen", rating: 5, text: "The white-glove curation by General Manager Vanshaj Sharma exceeded all family expectations. Our wedding was legendary.", occasion: "Wedding Celebration", status: "Featured" },
     { id: "t2", name: "Vikram Malhotra", rating: 5, text: "A truly column-less space that made our luxury automobile product launch look futuristic. Excellent AV setup.", occasion: "Corporate Gala", status: "Approved" },
     { id: "t3", name: "Rishabh Malhotra", rating: 4, text: "Perfect sunset cocktails. The terrace gardens have the best landscaping layouts in New Delhi.", occasion: "Private Soirée", status: "Pending" }
   ]);
