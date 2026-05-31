@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = __importDefault(require("../models/User"));
 const Admin_1 = __importDefault(require("../models/Admin"));
@@ -27,7 +27,7 @@ router.post("/register", async (req, res) => {
         if (existing) {
             return res.status(400).json({ success: false, error: "An account with this email already exists." });
         }
-        const hashedPassword = await bcrypt_1.default.hash(password, 12);
+        const hashedPassword = await bcryptjs_1.default.hash(password, 12);
         await User_1.default.create({
             name,
             email: email.toLowerCase(),
@@ -52,7 +52,7 @@ router.post("/admin/login", async (req, res) => {
         if (!admin) {
             return res.status(401).json({ success: false, error: "Invalid admin credentials." });
         }
-        const isMatch = await bcrypt_1.default.compare(password, admin.password);
+        const isMatch = await bcryptjs_1.default.compare(password, admin.password);
         if (!isMatch) {
             return res.status(401).json({ success: false, error: "Invalid admin credentials." });
         }
