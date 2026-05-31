@@ -263,7 +263,7 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
                 <Link
                   href="/profile"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="col-span-2 text-center py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center"
+                  className="col-span-2 text-center py-2.5 rounded-full border bg-[#C5A880]/15 text-[#755a28] border-[#C5A880]/40 font-bold hover:bg-[#C5A880]/25 transition-all text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center"
                 >
                   My Profile
                 </Link>
@@ -272,14 +272,14 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
                   <Link
                     href="/login"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-center py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center"
+                    className="text-center py-2.5 rounded-full border bg-[#C5A880]/15 text-[#755a28] border-[#C5A880]/40 font-bold hover:bg-[#C5A880]/25 transition-all text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center"
                   >
                     Login
                   </Link>
                   <Link
                     href="/register"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-center py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center"
+                    className="text-center py-2.5 rounded-full border bg-[#C5A880]/15 text-[#755a28] border-[#C5A880]/40 font-bold hover:bg-[#C5A880]/25 transition-all text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center"
                   >
                     Register
                   </Link>
