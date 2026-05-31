@@ -240,7 +240,7 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
               Quick Navigation
             </div>
             
-            <div className="flex flex-wrap gap-2 justify-center">
+            <div className="grid grid-cols-2 gap-2">
               {navLinks.map((link) => {
                 const active = isLinkActive(link.href, link.label);
                 return (
@@ -248,7 +248,7 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
                     key={link.label}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`font-label-caps text-[10px] tracking-wider px-4 py-2.5 rounded-full border transition-all ${
+                    className={`text-center py-2.5 rounded-full border text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center transition-all ${
                       active
                         ? "bg-[#755a28] text-white border-[#755a28] shadow-md shadow-[#755a28]/25 font-bold"
                         : "bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28]"
@@ -260,40 +260,44 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
               })}
 
               {user ? (
-                <>
-                  <Link
-                    href="/profile"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="font-label-caps text-[10px] tracking-wider px-4 py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all"
-                  >
-                    My Profile
-                  </Link>
-                  <button
-                    onClick={() => { setIsMobileMenuOpen(false); handleLogout(); }}
-                    className="font-label-caps text-[10px] tracking-wider px-4 py-2.5 rounded-full border bg-red-50 text-red-600 border-red-200/50 hover:bg-red-100 transition-all font-bold"
-                  >
-                    Sign Out
-                  </button>
-                </>
+                <Link
+                  href="/profile"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="col-span-2 text-center py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center"
+                >
+                  My Profile
+                </Link>
               ) : (
                 <>
                   <Link
                     href="/login"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="font-label-caps text-[10px] tracking-wider px-4 py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all"
+                    className="text-center py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center"
                   >
                     Login
                   </Link>
                   <Link
                     href="/register"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="font-label-caps text-[10px] tracking-wider px-4 py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all"
+                    className="text-center py-2.5 rounded-full border bg-[#F8F5F0] text-[#5A5245] border-[#E8DCC4]/30 hover:bg-[#C5A880]/15 hover:text-[#755a28] transition-all text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center"
                   >
                     Register
                   </Link>
                 </>
               )}
             </div>
+
+            {user && (
+              <>
+                <div className="h-[1px] bg-[#E8DCC4]/30 my-1" />
+                <button
+                  onClick={() => { setIsMobileMenuOpen(false); handleLogout(); }}
+                  className="w-full text-center bg-red-600 text-white font-label-caps text-[10px] tracking-widest py-3 rounded-full hover:bg-red-700 transition-all font-bold shadow-lg shadow-red-600/10"
+                >
+                  Sign Out
+                </button>
+              </>
+            )}
 
             <div className="h-[1px] bg-[#E8DCC4]/30 my-1" />
 
