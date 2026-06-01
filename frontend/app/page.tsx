@@ -202,7 +202,7 @@ export default function Home() {
 
       <main className="bg-background min-h-screen">
         {/* Cinematic Hero */}
-        <section className="relative h-[75vh] md:h-[80vh] min-h-[550px] md:min-h-[650px] w-full">
+        <section className="relative h-[75vh] md:h-screen min-h-[550px] md:min-h-0 w-full">
           <div className="absolute inset-0 overflow-hidden">
             <img
               alt="The Grand Lounge Ballroom"
