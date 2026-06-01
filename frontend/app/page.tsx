@@ -202,8 +202,8 @@ export default function Home() {
 
       <main className="bg-background min-h-screen">
         {/* Cinematic Hero */}
-        <section className="relative h-screen w-full overflow-hidden">
-          <div className="absolute inset-0">
+        <section className="relative h-[75vh] md:h-[80vh] min-h-[550px] md:min-h-[650px] w-full">
+          <div className="absolute inset-0 overflow-hidden">
             <img
               alt="The Grand Lounge Ballroom"
               className="w-full h-full object-cover animate-ken-burns"
@@ -251,30 +251,32 @@ export default function Home() {
                 <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-2 px-2">
                   
                   {/* Occasion Selection Field */}
-                  <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
-                       onClick={() => {
-                         setIsOccasionOpen(!isOccasionOpen);
-                         setIsDateOpen(false);
-                         setIsTimeSlotOpen(false);
-                         setIsGuestsOpen(false);
-                       }}>
-                    <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
-                      <span className="material-symbols-outlined text-xl">celebration</span>
-                    </div>
-                    <div className="flex-1 min-w-0 flex flex-col">
-                      <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Occasion</span>
-                      <input
-                        className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
-                        placeholder="Select Occasion"
-                        type="text"
-                        readOnly
-                        value={occasion}
-                      />
+                  <div className="relative w-full flex flex-col">
+                    <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group"
+                         onClick={() => {
+                           setIsOccasionOpen(!isOccasionOpen);
+                           setIsDateOpen(false);
+                           setIsTimeSlotOpen(false);
+                           setIsGuestsOpen(false);
+                         }}>
+                      <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
+                        <span className="material-symbols-outlined text-xl">celebration</span>
+                      </div>
+                      <div className="flex-1 min-w-0 flex flex-col">
+                        <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Occasion</span>
+                        <input
+                          className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
+                          placeholder="Select Occasion"
+                          type="text"
+                          readOnly
+                          value={occasion}
+                        />
+                      </div>
                     </div>
                     
                     {isOccasionOpen && (
                       <div 
-                        className="absolute bottom-full mb-6 left-0 w-80 md:w-[350px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
+                        className="relative mt-2 w-full max-w-[350px] md:absolute md:bottom-full md:left-0 md:mb-6 md:w-[350px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-4 md:p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <span className="font-label-caps text-secondary text-[11px] block font-bold mb-4 tracking-widest border-b border-secondary/15 pb-2">
@@ -302,30 +304,32 @@ export default function Home() {
                   </div>
    
                   {/* Date Selection Field */}
-                  <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
-                       onClick={() => {
-                         setIsDateOpen(!isDateOpen);
-                         setIsOccasionOpen(false);
-                         setIsTimeSlotOpen(false);
-                         setIsGuestsOpen(false);
-                       }}>
-                    <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
-                      <span className="material-symbols-outlined text-xl">calendar_month</span>
-                    </div>
-                    <div className="flex-1 min-w-0 flex flex-col">
-                      <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Event Date</span>
-                      <input
-                        className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
-                        placeholder="Select Date"
-                        type="text"
-                        readOnly
-                        value={date}
-                      />
+                  <div className="relative w-full flex flex-col">
+                    <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group"
+                         onClick={() => {
+                           setIsDateOpen(!isDateOpen);
+                           setIsOccasionOpen(false);
+                           setIsTimeSlotOpen(false);
+                           setIsGuestsOpen(false);
+                         }}>
+                      <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
+                        <span className="material-symbols-outlined text-xl">calendar_month</span>
+                      </div>
+                      <div className="flex-1 min-w-0 flex flex-col">
+                        <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Event Date</span>
+                        <input
+                          className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
+                          placeholder="Select Date"
+                          type="text"
+                          readOnly
+                          value={date}
+                        />
+                      </div>
                     </div>
    
                     {isDateOpen && (
                       <div 
-                        className="absolute bottom-full mb-6 left-1/2 -translate-x-1/2 w-[340px] md:w-[360px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
+                        className="relative mt-2 translate-x-0 w-full max-w-[360px] md:absolute md:bottom-full md:left-1/2 md:-translate-x-1/2 md:mb-6 md:w-[360px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-4 md:p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div className="flex items-center justify-between mb-4 border-b border-secondary/15 pb-2">
@@ -419,30 +423,32 @@ export default function Home() {
                   </div>
    
                   {/* Time Slot Selection Field */}
-                  <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
-                       onClick={() => {
-                         setIsTimeSlotOpen(!isTimeSlotOpen);
-                         setIsOccasionOpen(false);
-                         setIsDateOpen(false);
-                         setIsGuestsOpen(false);
-                       }}>
-                    <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
-                      <span className="material-symbols-outlined text-xl">schedule</span>
-                    </div>
-                    <div className="flex-1 min-w-0 flex flex-col">
-                      <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Time Slot</span>
-                      <input
-                        className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
-                        placeholder="Select Time"
-                        type="text"
-                        readOnly
-                        value={timeSlot}
-                      />
+                  <div className="relative w-full flex flex-col">
+                    <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group"
+                         onClick={() => {
+                           setIsTimeSlotOpen(!isTimeSlotOpen);
+                           setIsOccasionOpen(false);
+                           setIsDateOpen(false);
+                           setIsGuestsOpen(false);
+                         }}>
+                      <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
+                        <span className="material-symbols-outlined text-xl">schedule</span>
+                      </div>
+                      <div className="flex-1 min-w-0 flex flex-col">
+                        <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Time Slot</span>
+                        <input
+                          className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
+                          placeholder="Select Time"
+                          type="text"
+                          readOnly
+                          value={timeSlot}
+                        />
+                      </div>
                     </div>
    
                     {isTimeSlotOpen && (
                       <div 
-                        className="absolute bottom-full mb-6 left-1/2 -translate-x-1/2 w-80 md:w-[320px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
+                        className="relative mt-2 translate-x-0 w-full max-w-[320px] md:absolute md:bottom-full md:left-1/2 md:-translate-x-1/2 md:mb-6 md:w-[320px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-4 md:p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <span className="font-label-caps text-secondary text-[11px] block font-bold mb-4 tracking-widest border-b border-secondary/15 pb-2">
@@ -470,30 +476,32 @@ export default function Home() {
                   </div>
    
                   {/* Guests Selection Field */}
-                  <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group relative"
-                       onClick={() => {
-                         setIsGuestsOpen(!isGuestsOpen);
-                         setIsOccasionOpen(false);
-                         setIsDateOpen(false);
-                         setIsTimeSlotOpen(false);
-                       }}>
-                    <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
-                      <span className="material-symbols-outlined text-xl">groups</span>
-                    </div>
-                    <div className="flex-1 min-w-0 flex flex-col">
-                      <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Guest Count</span>
-                      <input
-                        className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
-                        placeholder="Select Guests"
-                        type="text"
-                        readOnly
-                        value={guests}
-                      />
+                  <div className="relative w-full flex flex-col">
+                    <div className="flex items-center gap-3 p-2.5 rounded-[20px] md:rounded-full hover:bg-surface-container/60 transition-all cursor-pointer group"
+                         onClick={() => {
+                           setIsGuestsOpen(!isGuestsOpen);
+                           setIsOccasionOpen(false);
+                           setIsDateOpen(false);
+                           setIsTimeSlotOpen(false);
+                         }}>
+                      <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary/20 transition-all shrink-0">
+                        <span className="material-symbols-outlined text-xl">groups</span>
+                      </div>
+                      <div className="flex-1 min-w-0 flex flex-col">
+                        <span className="font-label-caps text-secondary text-[9px] tracking-widest mb-0.5 block">Guest Count</span>
+                        <input
+                          className="bg-transparent border-0 font-display text-sm lg:text-base text-on-surface font-semibold placeholder:text-on-surface-variant/40 outline-none w-full cursor-pointer focus:ring-0 p-0 pointer-events-none animate-fade-in"
+                          placeholder="Select Guests"
+                          type="text"
+                          readOnly
+                          value={guests}
+                        />
+                      </div>
                     </div>
    
                     {isGuestsOpen && (
                       <div 
-                        className="absolute bottom-full mb-6 right-0 w-80 md:w-[350px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
+                        className="relative mt-2 w-full max-w-[350px] md:absolute md:bottom-full md:right-0 md:mb-6 md:w-[350px] bg-surface/95 backdrop-blur-lg rounded-[28px] border border-secondary/20 p-4 md:p-6 shadow-[0_24px_48px_-12px_rgba(117,90,40,0.18)] z-50 animate-fade-in"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <span className="font-label-caps text-secondary text-[11px] block font-bold mb-4 tracking-widest border-b border-secondary/15 pb-2">
