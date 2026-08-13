@@ -5,20 +5,39 @@ import * as jose from "jose";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Intercept all /admin/ paths except /admin/login
-  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
+  // If someone attempts to access /admin/login directly, redirect to standard /login
+  if (pathname === "/admin/login") {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // Intercept all /admin routes
+  if (pathname.startsWith("/admin")) {
     const adminToken = request.cookies.get("admin_token")?.value;
 
     if (!adminToken) {
-      return NextResponse.redirect(new URL("/admin/login", request.url));
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", "/admin/dashboard");
+      return NextResponse.redirect(loginUrl);
     }
 
     try {
-      const secret = new TextEncoder().encode(process.env.NEXTAUTH_SECRET || "fallback_secret");
-      await jose.jwtVerify(adminToken, secret);
+      const secret = new TextEncoder().encode(
+        process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET || "fallback_secret"
+      );
+      const { payload } = await jose.jwtVerify(adminToken, secret);
+
+      if (payload.role !== "admin") {
+        const loginUrl = new URL("/login", request.url);
+        loginUrl.searchParams.set("callbackUrl", "/admin/dashboard");
+        const response = NextResponse.redirect(loginUrl);
+        response.cookies.delete("admin_token");
+        return response;
+      }
     } catch (error) {
-      console.error("Middleware Verification Error:", error);
-      const response = NextResponse.redirect(new URL("/admin/login", request.url));
+      console.error("Middleware Admin Verification Error:", error);
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", "/admin/dashboard");
+      const response = NextResponse.redirect(loginUrl);
       response.cookies.delete("admin_token");
       return response;
     }
@@ -30,3 +49,4 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: ["/admin/:path*"],
 };
+

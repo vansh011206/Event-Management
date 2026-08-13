@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import dbConnect from "./mongodb";
 import User from "./models/User";
+import Admin from "./models/Admin";
 import bcrypt from "bcryptjs";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -18,23 +19,37 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
 
         await dbConnect();
-        
-        const user = await User.findOne({ email: credentials.email.toString().toLowerCase() });
-        if (!user) {
-          throw new Error("Invalid email or password");
+        const normalizedEmail = credentials.email.toString().toLowerCase();
+
+        // Check if admin credentials
+        const admin = await Admin.findOne({ email: normalizedEmail });
+        if (admin) {
+          const isMatch = await bcrypt.compare(credentials.password.toString(), admin.password);
+          if (isMatch) {
+            return {
+              id: admin._id.toString(),
+              name: admin.name,
+              email: admin.email,
+              role: "admin",
+            };
+          }
         }
 
-        const isMatch = await bcrypt.compare(credentials.password.toString(), user.password);
-        if (!isMatch) {
-          throw new Error("Invalid email or password");
+        // Check if standard user credentials
+        const user = await User.findOne({ email: normalizedEmail });
+        if (user) {
+          const isMatch = await bcrypt.compare(credentials.password.toString(), user.password);
+          if (isMatch) {
+            return {
+              id: user._id.toString(),
+              name: user.name,
+              email: user.email,
+              role: user.role || "user",
+            };
+          }
         }
 
-        return {
-          id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-          role: user.role || "user",
-        };
+        throw new Error("Invalid email or password");
       },
     }),
   ],

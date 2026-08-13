@@ -44,10 +44,36 @@ function LoginForm() {
       if (res?.error) {
         setError("Invalid email or password.");
       } else {
-        setSuccess("Signed in successfully! Redirecting...");
-        const callbackUrl = searchParams.get("callbackUrl") || "/profile";
-        router.push(callbackUrl);
-        router.refresh();
+        // Sync admin token and inspect session role
+        try {
+          const syncRes = await fetch("/api/auth/admin-sync", { method: "POST" });
+          const syncData = await syncRes.json();
+
+          const callbackUrl = searchParams.get("callbackUrl");
+
+          if (syncData?.isAdmin) {
+            setSuccess("Admin authenticated! Redirecting to Dashboard...");
+            const adminDest =
+              callbackUrl && callbackUrl.startsWith("/admin") && callbackUrl !== "/admin/login"
+                ? callbackUrl
+                : "/admin/dashboard";
+            router.push(adminDest);
+            router.refresh();
+          } else {
+            setSuccess("Signed in successfully! Redirecting...");
+            let userDest = callbackUrl || "/profile";
+            if (userDest.startsWith("/admin")) {
+              userDest = "/profile";
+            }
+            router.push(userDest);
+            router.refresh();
+          }
+        } catch {
+          // Fallback standard routing
+          const callbackUrl = searchParams.get("callbackUrl") || "/profile";
+          router.push(callbackUrl.startsWith("/admin") ? "/profile" : callbackUrl);
+          router.refresh();
+        }
       }
     } catch {
       setError("An unexpected error occurred. Please try again.");

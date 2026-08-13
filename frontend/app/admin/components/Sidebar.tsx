@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
+import { signOut } from "next-auth/react";
 
 interface SidebarProps {
   isMobileSidebarOpen: boolean;
@@ -35,8 +36,12 @@ function SidebarContent({
   ];
 
   const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/admin-sync", { method: "DELETE" });
+    } catch {}
     document.cookie = "admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    router.push("/admin/login");
+    await signOut({ redirect: false });
+    router.push("/login");
     router.refresh();
   };
 

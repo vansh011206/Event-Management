@@ -9,6 +9,7 @@ interface SessionUser {
   name?: string | null;
   email?: string | null;
   id?: string;
+  role?: string | null;
 }
 
 export default function Navbar({ activePage = "" }: { activePage?: string }) {
@@ -70,6 +71,10 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
 
   const handleLogout = async () => {
     setIsProfileDropdownOpen(false);
+    try {
+      await fetch("/api/auth/admin-sync", { method: "DELETE" });
+    } catch {}
+    document.cookie = "admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     await signOut({ redirect: false });
     setUser(null);
     router.push("/");
@@ -166,6 +171,17 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
                     <p className="text-[10px] text-[#6B6B6B] truncate">{user.email}</p>
                   </div>
 
+                  {user.role === "admin" && (
+                    <Link
+                      href="/admin/dashboard"
+                      onClick={() => setIsProfileDropdownOpen(false)}
+                      className="w-full text-left px-4 py-2.5 text-xs text-[#8C6D3E] font-bold hover:bg-[#F8F5F0] rounded-[10px] transition-colors flex items-center gap-3 bg-[#C5A880]/10 border border-[#C5A880]/20 mb-1"
+                    >
+                      <span className="material-symbols-outlined text-sm text-[#8C6D3E]">admin_panel_settings</span>
+                      Admin Dashboard
+                    </Link>
+                  )}
+
                   <Link
                     href="/profile"
                     onClick={() => setIsProfileDropdownOpen(false)}
@@ -241,6 +257,16 @@ export default function Navbar({ activePage = "" }: { activePage?: string }) {
             </div>
             
             <div className="grid grid-cols-2 gap-2">
+              {user?.role === "admin" && (
+                <Link
+                  href="/admin/dashboard"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="col-span-2 text-center py-2.5 rounded-full bg-[#C5A880] text-white font-bold border border-[#C5A880] text-[10px] tracking-wider uppercase font-label-caps flex items-center justify-center gap-2 shadow-md"
+                >
+                  <span className="material-symbols-outlined text-sm">admin_panel_settings</span>
+                  Admin Dashboard
+                </Link>
+              )}
               {navLinks.map((link) => {
                 const active = isLinkActive(link.href, link.label);
                 return (

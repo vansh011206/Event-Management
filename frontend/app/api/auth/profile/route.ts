@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import User from "@/lib/models/User";
+import Admin from "@/lib/models/Admin";
 
 export async function GET() {
   try {
@@ -14,7 +15,21 @@ export async function GET() {
     }
 
     await dbConnect();
-    const user = await User.findById(session.user.id).select("-password");
+    let user: any = await User.findById(session.user.id).select("-password");
+
+    if (!user) {
+      const admin = await Admin.findById(session.user.id).select("-password");
+      if (admin) {
+        user = {
+          _id: admin._id,
+          name: admin.name,
+          email: admin.email,
+          phone: "",
+          createdAt: admin.createdAt,
+        };
+      }
+    }
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "User not found." },
@@ -28,7 +43,7 @@ export async function GET() {
         id: user._id,
         name: user.name,
         email: user.email,
-        phone: user.phone,
+        phone: user.phone || "",
         createdAt: user.createdAt,
       },
     });
